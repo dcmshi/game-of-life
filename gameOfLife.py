@@ -58,15 +58,16 @@ def makeGrid(dimX, dimY):
         grid.append(row)
     return grid
 
-def drawGrid(grid, dimX, dimY, win):
+def drawGrid(firstDraw, grid, nextGrid, dimX, dimY, win):
     for i in range(dimY):
         for j in range(dimX):
             square = Rectangle(Point(j*10+10, i*10+10), Point(j*10, i*10))
-            if grid[i][j]:
-                square.setFill('white')
-            else:
-                square.setFill('black')
-            square.draw(win)
+            if firstDraw or grid[i][j] != nextGrid[i][j]:
+                if nextGrid[i][j]:
+                    square.setFill('white')
+                else:
+                    square.setFill('black')
+                square.draw(win)
 
 def main():
     dimX, dimY = [20, 20]
@@ -83,10 +84,12 @@ def main():
         
     win = GraphWin('Conways Game of Life', width = dimX * 10, height = dimY * 10)
     grid = makeGrid(dimX, dimY)
-    
+    drawGrid(True, grid, grid, dimX, dimY, win)
     while True:
         grid = getNextGrid(grid, dimX, dimY)
-        drawGrid(grid, dimX, dimY, win)
+        nextGrid = getNextGrid(grid, dimX, dimY)
+        drawGrid(False, grid, nextGrid, dimX, dimY, win)
+        grid = nextGrid
         time.sleep(sleepTime)
     win.close()
 
