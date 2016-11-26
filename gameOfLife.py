@@ -1,6 +1,7 @@
 from graphics import *
 import pprint
 import random
+import sys
 import time
 
 pp = pprint.PrettyPrinter(indent=2)
@@ -60,7 +61,7 @@ def makeGrid(dimX, dimY):
 def drawGrid(grid, dimX, dimY, win):
     for i in range(dimY):
         for j in range(dimX):
-            square = Rectangle(Point(j*20+20, i*20+20), Point(j*20, i*20))
+            square = Rectangle(Point(j*10+10, i*10+10), Point(j*10, i*10))
             if grid[i][j]:
                 square.setFill('white')
             else:
@@ -68,15 +69,25 @@ def drawGrid(grid, dimX, dimY, win):
             square.draw(win)
 
 def main():
-    dimX, dimY = [50, 50]
-    win = GraphWin('Conways Game of Life', width = dimX * 20, height = dimY * 20)
+    dimX, dimY = [20, 20]
+    sleepTime = 5
+    args = map(lambda x: int(x), sys.argv[1:])
+    
+    if len(args) == 2:
+        dimX = args[0]
+        dimY = args[1]
+    elif len(args) == 3:
+        dimX = args[0]
+        dimY = args[1]
+        sleepTime = args[2]
+        
+    win = GraphWin('Conways Game of Life', width = dimX * 10, height = dimY * 10)
     grid = makeGrid(dimX, dimY)
-    #pp.pprint(grid)
+    
     while True:
         grid = getNextGrid(grid, dimX, dimY)
         drawGrid(grid, dimX, dimY, win)
-        #pp.pprint(grid)
-        time.sleep(5)
+        time.sleep(sleepTime)
     win.close()
 
 main()
