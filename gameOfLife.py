@@ -86,7 +86,6 @@ def main():
     grid = makeGrid(dimX, dimY)
     drawGrid(True, grid, grid, dimX, dimY, win)
     while True:
-        grid = getNextGrid(grid, dimX, dimY)
         nextGrid = getNextGrid(grid, dimX, dimY)
         drawGrid(False, grid, nextGrid, dimX, dimY, win)
         grid = nextGrid
