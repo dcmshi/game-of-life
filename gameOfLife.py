@@ -1,3 +1,4 @@
+from graphics import *
 import pprint
 import random
 
@@ -21,19 +22,18 @@ def checkNeighbours(grid, x, y, dimX, dimY):
         neighbourY = (y + move[1]) % dimY
         if grid[neighbourY][neighbourX] == 1:
             numLiving += 1
-    return numLiving, 8 - numLiving
+    return numLiving
 
 def getNextState(grid, x, y, dimX, dimY):
     curState = grid[y][x]
-    numLiving, numDead = checkNeighbours(grid, x, y, dimX, dimY)
+    numLiving = checkNeighbours(grid, x, y, dimX, dimY)
     if curState == 0:
         if numLiving == 3:
             return 0
-        return 1
+        else:
+            return 1
     else:
-        if numLiving < 2:
-            return 0
-        elif 2 <= numLiving <=3:
+        if 2 <= numLiving <=3:
             return 1
         else:
             return 0
@@ -56,16 +56,25 @@ def makeGrid(dimX, dimY):
         grid.append(row)
     return grid
 
+def drawGrid(grid, dimX, dimY, win):
+    for i in range(dimY):
+        for j in range(dimX):
+            square = Rectangle(Point(j*50, i*50), Point(j*50-50, i*50-50))
+            if grid[j][i]:
+                square.setFill('red')
+            else:
+                square.setFill('blue')
+            square.draw(win)
 
 def main():
     dimX, dimY = [5, 5]
+    win = GraphWin('Conways Game of Life', width = dimX * 50, height = dimY * 50)
     grid = makeGrid(5,5)
     pp.pprint(grid)
     while True:
         grid = getNextGrid(grid, dimX, dimY)
+        drawGrid(grid, dimX, dimY, win)
         pp.pprint(grid)
+    win.close()
 
 main()
-                          
-
-
